@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fitmove.data.remote.ExerciseDto
 import com.example.fitmove.data.remote.RetrofitClient
+import com.example.fitmove.data.repository.ExerciseRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,6 +17,7 @@ sealed interface ExerciseUiState {
 }
 
 class ExerciseViewModel : ViewModel() {
+    private val repository = ExerciseRepository()
 
     private val _uiState =
         MutableStateFlow<ExerciseUiState>(ExerciseUiState.Loading)
