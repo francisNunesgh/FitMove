@@ -18,10 +18,10 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.example.fitmove.ui.theme.ExerciseScreen
 import com.example.fitmove.ui.theme.FitMoveTheme
 
 class MainActivity : ComponentActivity() {
@@ -30,15 +30,13 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             FitMoveTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    HomeScreen(
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+
+                ExerciseScreen()
             }
         }
     }
 }
+
 @Composable
 fun HomeScreen(
     modifier: Modifier = Modifier
@@ -165,7 +163,6 @@ fun ExerciseCard(
         }
     }
 }
-
 
 
 @Preview(showBackground = true)
