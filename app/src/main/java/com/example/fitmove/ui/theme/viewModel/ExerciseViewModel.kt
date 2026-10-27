@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.fitmove.data.remote.ExerciseDto
 import com.example.fitmove.data.remote.RetrofitClient
 import com.example.fitmove.data.repository.ExerciseRepository
+import com.example.fitmove.data.repository.ExerciseRepositoryImpl
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,8 +17,11 @@ sealed interface ExerciseUiState {
     data class Error(val message: String) : ExerciseUiState
 }
 
-class ExerciseViewModel : ViewModel() {
-    private val repository = ExerciseRepository()
+class ExerciseViewModel(
+    private val repository: ExerciseRepository =
+        ExerciseRepositoryImpl()
+) : ViewModel() {
+   // private val repository = ExerciseRepository()
 
     private val _uiState =
         MutableStateFlow<ExerciseUiState>(ExerciseUiState.Loading)
@@ -33,8 +37,9 @@ class ExerciseViewModel : ViewModel() {
             _uiState.value = ExerciseUiState.Loading
 
             try {
-                val response = RetrofitClient.exerciseApi.getExercises()
-                _uiState.value = ExerciseUiState.Success(response.data)
+                val exercises = repository.getExercises()
+                // val response = RetrofitClient.exerciseApi.getExercises()
+                _uiState.value = ExerciseUiState.Success(exercises)
             } catch (exception: Exception) {
                 _uiState.value = ExerciseUiState.Error(
                     exception.message ?: "Não foi possível carregar os exercícios."
@@ -43,3 +48,5 @@ class ExerciseViewModel : ViewModel() {
         }
     }
 }
+
+
