@@ -19,14 +19,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.fitmove.ui.theme.viewModel.ExerciseUiState
 import com.example.fitmove.ui.theme.viewModel.ExerciseViewModel
 
 @Composable
 fun ExerciseScreen(
-    viewModel: ExerciseViewModel = viewModel()
+    //viewModel: ExerciseViewModel = viewModel()
 ) {
+    val viewModel: ExerciseViewModel = hiltViewModel()
     val uiState by viewModel.uiState.collectAsState()
 
     Scaffold { innerPadding ->

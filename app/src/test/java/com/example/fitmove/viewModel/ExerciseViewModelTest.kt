@@ -1,6 +1,8 @@
 package com.example.fitmove.viewModel
 
-import com.example.fitmove.data.remote.ExerciseDto
+import com.example.fitmove.domain.model.Exercise
+import com.example.fitmove.domain.repository.ExerciseRepository
+import com.example.fitmove.domain.usecase.GetExercisesUseCase
 import com.example.fitmove.testutil.MainDispatcherRule
 import com.example.fitmove.ui.theme.viewModel.ExerciseUiState
 import com.example.fitmove.ui.theme.viewModel.ExerciseViewModel
@@ -17,7 +19,7 @@ class ExerciseViewModelTest {
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
 
-    private val fakeExercise = ExerciseDto(
+    private val fakeExercise = Exercise(
         id = "1",
         name = "Agachamento",
         primaryMuscle = "quadriceps",
@@ -26,28 +28,25 @@ class ExerciseViewModelTest {
     )
 
     private class FakeExerciseRepository(
-        private val exercises: List<ExerciseDto>
+        private val exercises: List<Exercise>
     ) : ExerciseRepository {
 
-        override suspend fun getExercises(): List<ExerciseDto> {
+        override suspend fun getExercises(): List<Exercise> {
             return exercises
         }
     }
 
     @Test
     fun `when repository succeeds then state is Success`() = runTest (
-        (mainDispatcherRule.dispatcher)) {
-        // Arrange: preparar os dados de teste
+        mainDispatcherRule.dispatcher) {
         val repository = FakeExerciseRepository(
             listOf(fakeExercise)
         )
-        val viewModel = ExerciseViewModel(repository)
+        val useCase = GetExercisesUseCase(repository)
+        val viewModel = ExerciseViewModel(useCase)
 
-
-        // Act: executar as corrotinas pendentes
         advanceUntilIdle()
 
-        // Assert: verificar o resultado
         val state = viewModel.uiState.value
 
         assertEquals(
@@ -61,7 +60,8 @@ class ExerciseViewModelTest {
         runTest(mainDispatcherRule.dispatcher) {
 
             val repository = FailingExerciseRepository()
-            val viewModel = ExerciseViewModel(repository)
+            val useCase = GetExercisesUseCase(repository)
+            val viewModel = ExerciseViewModel(useCase)
 
             advanceUntilIdle()
 
@@ -73,7 +73,7 @@ class ExerciseViewModelTest {
 }
 
 private class FailingExerciseRepository : ExerciseRepository {
-    override suspend fun getExercises(): List<ExerciseDto> {
+    override suspend fun getExercises(): List<Exercise> {
         throw Exception("Erro ao carregar exercícios")
     }
 }

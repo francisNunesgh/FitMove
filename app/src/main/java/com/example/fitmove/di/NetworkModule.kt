@@ -1,6 +1,8 @@
 package com.example.fitmove.di
 
 import com.example.fitmove.data.remote.ExerciseApiService
+import com.example.fitmove.data.repository.ExerciseRepositoryImpl
+import com.example.fitmove.domain.repository.ExerciseRepository
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
 import dagger.Provides
@@ -40,5 +42,13 @@ object NetworkModule {
         retrofit: Retrofit
     ): ExerciseApiService {
         return retrofit.create(ExerciseApiService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideExerciseRepository(
+        impl: ExerciseRepositoryImpl
+    ): ExerciseRepository {
+        return impl
     }
 }

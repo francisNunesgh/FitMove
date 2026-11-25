@@ -4,10 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.fitmove.domain.model.Exercise
 import com.example.fitmove.domain.usecase.GetExercisesUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
+
 
 sealed interface ExerciseUiState {
     data object Loading : ExerciseUiState
@@ -16,7 +19,8 @@ sealed interface ExerciseUiState {
     data class Error(val message: String) : ExerciseUiState
 }
 
-class ExerciseViewModel(
+@HiltViewModel
+class ExerciseViewModel @Inject constructor(
     private val getExercisesUseCase: GetExercisesUseCase
 
     //private val repository: ExerciseRepository =
