@@ -1,7 +1,6 @@
 package com.example.fitmove.viewModel
 
 import com.example.fitmove.data.remote.ExerciseDto
-import com.example.fitmove.data.repository.ExerciseRepository
 import com.example.fitmove.testutil.MainDispatcherRule
 import com.example.fitmove.ui.theme.viewModel.ExerciseUiState
 import com.example.fitmove.ui.theme.viewModel.ExerciseViewModel
